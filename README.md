@@ -66,3 +66,138 @@ User.select("COUNT(*) AS color_count")
   .having("color_count > 1")
 ```
 
+## AR to SQL
+
+1)
+```ruby
+Post.all
+```
+```sql
+SELECT *
+FROM posts
+```
+
+2)
+```ruby
+Post.first
+```
+
+```sql
+SELECT *
+FROM posts
+ORDER BY id
+LIMIT 1
+```
+
+3)
+```ruby
+Post.last
+```
+
+```sql
+SELECT *
+FROM posts
+ORDER BY id DESC
+LIMIT 1
+```
+
+4)
+```ruby
+Post.where(:id => 4)
+```
+
+```sql
+SELECT *
+FROM posts
+WHERE id=4
+```
+
+5)
+```ruby
+Post.find(4)
+```
+
+```sql
+SELECT *
+FROM posts
+WHERE id=4
+```
+
+6)
+```ruby
+User.count
+```
+
+```sql
+SELECT COUNT(*)
+FROM posts
+```
+
+7)
+```ruby
+Post.select(:name).where(:created_at > 3.days.ago).order(:created_at)
+```
+
+```sql
+SELECT name
+FROM posts
+ORDER BY created_at
+WHERE created_at > DATEADD(day,-3,GETDATE())
+```
+
+8)
+```ruby
+Post.select("COUNT(*)").group(:category_id)
+```
+
+```sql
+SELECT COUNT(*)
+FROM posts
+GROUP BY category_id
+```
+
+9)
+```ruby
+All posts created before 2014
+```
+
+```sql
+SELECT *
+FROM posts
+WHERE created_at < 2014
+```
+
+10)
+```ruby
+A list of all (unique) first names for authors who have written at least 3 posts
+```
+
+```sql
+SELECT DISTINCT first_name, COUNT(*)
+FROM authors
+JOIN posts ON authors.id=posts.authorid
+GROUP BY authors.id
+HAVING COUNT(*) >= 3
+```
+
+11)
+```ruby
+The posts with titles that start with the word "The"
+```
+
+```sql
+SELECT *
+FROM posts
+WHERE title LIKE 'The%'
+```
+
+12)
+```ruby
+Posts with IDs of 3,5,7, and 9
+```
+
+```sql
+SELECT *
+FROM posts
+WHERE id IN (3,5,7,9)
+```
