@@ -232,11 +232,14 @@ Author.joins("JOIN posts ON authors.id = posts.authorid")
       .first
 ```
 
-3)
+3) Who was the last author to join?
 ```sql
-
+SELECT name
+FROM authors
+ORDER BY created_at DESC
+LIMIT 1
 ```
 ```ruby
-
+Author.last
 ```
 
