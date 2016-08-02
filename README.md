@@ -6,6 +6,7 @@ Morgan and Vishal.
 
 ## Exercises
 
+### SQL to AR
 1)
 ```sql
 SELECT *
@@ -66,7 +67,7 @@ User.select("COUNT(*) AS color_count")
   .having("color_count > 1")
 ```
 
-## AR to SQL
+### AR to SQL
 
 1)
 ```ruby
@@ -201,3 +202,41 @@ SELECT *
 FROM posts
 WHERE id IN (3,5,7,9)
 ```
+
+### Custom Translation: 3 Queries
+
+1) How many posts are written by authors who are older than 46?
+```sql
+SELECT COUNT(*)
+FROM posts JOIN authors ON posts.authorid = authors.id
+WHERE age > 46
+```
+```ruby
+Post.joins("JOIN authors ON posts.authorid = authors.id")
+    .where("age > 46")
+    .count
+```
+
+2) Which author has written the most posts?
+```sql
+SELECT name
+FROM authors JOIN posts ON authors.id = posts.authorid
+GROUP BY authors.id
+ORDER BY COUNT(*)
+LIMIT 1
+```
+```ruby
+Author.joins("JOIN posts ON authors.id = posts.authorid")
+      .group("authors.id")
+      .order("COUNT(*)")
+      .first
+```
+
+3)
+```sql
+
+```
+```ruby
+
+```
+
